@@ -123,7 +123,7 @@ export default function Savings() {
           <table  border="0" width="100%" style={{background:'#fff',borderRadius:"10px", paddingTop:"0"}}>
   <tr>
    <td>
-    <div class="table-data">
+   <div className="table-data">
      <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start"}}>
      <tr  style={{background:'#D6FFFD', height:"40px", border:"none",borderCollapse:"collapse"}}> 
           <th style={{background:'#D6FFFD', border:"none",borderCollapse:"collapse",textAlign:"start", padding:"20px"}} >Logo</th>

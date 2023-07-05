@@ -16,6 +16,8 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import icon from "../images/ulegoIcon.svg"
+import LoadingModal from '../components/LoadingModal';
+import SessionModal from '../components/SessionModal';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -87,6 +89,8 @@ export default function Wallets() {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [loading, setLoading] = useState(true);
+  const [apiErr, setApiErr] = useState(false);
 
   const navigate = useNavigate();
 
@@ -118,13 +122,16 @@ export default function Wallets() {
       
       axios.get(url, { headers })
       .then(response => {
-      console.log('GET request successful!');
-      // console.log(response.data.result)
+   
       setData(response.data.result);
+       setLoading(false)
+     
       })
       .catch(error => {
-      console.error('GET request failed:', error);
+        setApiErr(true)
       });
+
+      
     
     };
 
@@ -143,6 +150,7 @@ export default function Wallets() {
   return (
 
     <div className='dash'>
+      {apiErr ? <SessionModal/> : ""}
     <DashNav />
     <div className="dash-big">
           <div className="title">
@@ -165,8 +173,8 @@ export default function Wallets() {
           <table  border="0" width="100%" style={{background:'#fff',borderRadius:"10px", paddingTop:"0"}}>
   <tr>
    <td>
-    <div class="table-data">
-     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start"}}>
+   <div className="table-data">
+     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start", position:"relative"}}>
      <tr  style={{background:'#D6FFFD', height:"40px", border:"none",borderCollapse:"collapse", fontSize:"16px"}}> 
           <th style={{background:'#D6FFFD', border:"none",borderCollapse:"collapse",textAlign:"start",paddingLeft:"20px"}} >WALLET</th>
           <th style={{textAlign:"start"}}>Account Number</th>
@@ -175,19 +183,23 @@ export default function Wallets() {
           <th style={{textAlign:"start"}}>Book Balance</th>
           <th style={{textAlign:"start"}}>Wallet Status</th>
      </tr>
-        {currentItems.map(wallet => (
+       {
+        loading ? <LoadingModal/> :<>
+         {currentItems.map(wallet => (
          
-              <tr key={wallet.wallet_id} className="coin tableHover"onClick={() => handleRowClick(wallet.account_number)} >
-          <td style={{paddingLeft:"0px",display:"flex",gap:"10px"}}><img src={icon} alt={""}/> {wallet.wallet_name}</td>
-          <td style={{paddingLeft:"0px"}}>{wallet.account_number}</td>
-          <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.phone_number}</td>
-          <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.balance}</td>
-          <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.book_balance}</td>
-          <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.on_hold_text}</td>
-        </tr>
-        
-          ))}
-      
+         <tr key={wallet.wallet_id} className="coin tableHover"onClick={() => handleRowClick(wallet.account_number)} >
+     <td style={{paddingLeft:"0px",display:"flex",gap:"10px"}}><img src={icon} alt={""}/> {wallet.wallet_name}</td>
+     <td style={{paddingLeft:"0px"}}>{wallet.account_number}</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.phone_number}</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.balance}</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.book_balance}</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.on_hold_text}</td>
+   </tr>
+   
+     ))}
+ 
+        </>
+       }
       </table>
      </div>
     </td>

@@ -14,6 +14,8 @@ import { Backdrop, Box, Button, Fade, Modal, Typography } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import LoadingModal from '../components/LoadingModal';
+import SessionModal from '../components/SessionModal';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -77,7 +79,8 @@ export default function DataBundle() {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-
+  const [loading, setLoading] = useState(true);
+  const [apiErr, setApiErr] = useState(false);
   
   const navigate = useNavigate();
 
@@ -106,12 +109,18 @@ export default function DataBundle() {
       'X-DeviceKey': deviceKey,
       };
       
+
+      
+
       axios.get(url, { headers })
       .then(response => {
+   
       setData(response.data.result);
+       setLoading(false)
+     
       })
       .catch(error => {
-      console.error('GET request failed:', error);
+        setApiErr(true)
       });
     
     };
@@ -131,6 +140,7 @@ export default function DataBundle() {
   return (
 
     <div className='dash'>
+       {apiErr ? <SessionModal/> : ""}
     <DashNav />
     <div className="dash-big">
           <div className="title">
@@ -153,8 +163,8 @@ export default function DataBundle() {
           <table  border="0" width="100%" style={{background:'#fff',borderRadius:"10px", paddingTop:"0"}}>
   <tr>
    <td>
-    <div class="table-data">
-     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start"}}>
+   <div className="table-data">
+     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start", position:"relative"}}>
      <tr  style={{background:'#D6FFFD', height:"40px", border:"none",borderCollapse:"collapse", fontSize:"14px"}}> 
           <th style={{ border:"none",textAlign:"start",paddingLeft:"20px"}} >Service Description</th>
           <th style={{textAlign:"start",paddingLeft:"0px"}}>Sender</th>
@@ -164,20 +174,22 @@ export default function DataBundle() {
           <th style={{textAlign:"start",paddingLeft:"0px"}}>Date</th>
           <th style={{textAlign:"start",paddingLeft:"0px"}}>Reference</th>
      </tr>
-        {currentItems.map((wallet, index )=> (
+        {
+          loading ? <LoadingModal/> : <>{currentItems.map((wallet, index )=> (
          
-              <tr key={index} className="coin tableHover"onClick={() => handleRowClick(wallet.reference)} >
-          <td style={{paddingLeft:"0px",paddingLeft:"0px",display:"flex",alignItems:"center",gap:"6px"}}><img src={wallet.service_logo} alt={"bundle logo"} width={"20px"} style={{borderRadius:"50%"}} />{wallet.service_description}</td>
-          <td style={{paddingLeft:"0px",paddingLeft:"0px"}}>{wallet.from_account_name}</td>
-          <td style={{paddingLeft:"0px",marginLeft:"0px"}}>{wallet.beneficiary_number}</td>
-          <td style={{paddingLeft:"0px",marginLeft:"0px", color: wallet.transaction_state_text==="Completed"? "#08da4e": "#ffbb00", fontWeight:"500"}}>{wallet.transaction_state_text}</td>
-          <td style={{paddingLeft:"0px",marginLeft:"0px"}}>{wallet.amount}</td>
-          <td style={{paddingLeft:"0px",marginLeft:"0px"}}>{wallet.date_text}</td>
-          <td style={{paddingLeft:"0px",marginLeft:"0px"}}>{wallet.reference}</td>
-        </tr>
-        
-          ))}
+            <tr key={index} className="coin tableHover"onClick={() => handleRowClick(wallet.reference)} >
+        <td style={{paddingLeft:"0px",paddingLeft:"0px",display:"flex",alignItems:"center",gap:"6px"}}><img src={wallet.service_logo} alt={"bundle logo"} width={"20px"} style={{borderRadius:"50%"}} />{wallet.service_description}</td>
+        <td style={{paddingLeft:"0px",paddingLeft:"0px"}}>{wallet.from_account_name}</td>
+        <td style={{paddingLeft:"0px",marginLeft:"0px"}}>{wallet.beneficiary_number}</td>
+        <td style={{paddingLeft:"0px",marginLeft:"0px", color: wallet.transaction_state_text==="Completed"? "#08da4e": "#ffbb00", fontWeight:"500"}}>{wallet.transaction_state_text}</td>
+        <td style={{paddingLeft:"0px",marginLeft:"0px"}}>{wallet.amount}</td>
+        <td style={{paddingLeft:"0px",marginLeft:"0px"}}>{wallet.date_text}</td>
+        <td style={{paddingLeft:"0px",marginLeft:"0px"}}>{wallet.reference}</td>
+      </tr>
       
+        ))}
+    </>
+        }
       </table>
      </div>
     </td>

@@ -14,6 +14,8 @@ import { Backdrop, Box, Button, Fade, Modal, Typography } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import SessionModal from '../components/SessionModal';
+import LoadingModal from '../components/LoadingModal';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -77,6 +79,10 @@ export default function Electricity() {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [apiErr, setApiErr] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+
   const navigate = useNavigate();
 
   const handleRowClick = (id) => {
@@ -104,10 +110,11 @@ export default function Electricity() {
       .then(response => {
       console.log('GET request successful!');
       console.log(response.data.result)
+      setLoading(false)
       setData(response.data.result);
       })
       .catch(error => {
-      console.error('GET request failed:', error);
+       setApiErr(true)
       });
     
     };
@@ -120,6 +127,7 @@ export default function Electricity() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
+  console.log(currentItems)
   // Change page
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -127,6 +135,7 @@ export default function Electricity() {
   return (
 
     <div className='dash'>
+        {apiErr ? <SessionModal/> : ""}
     <DashNav />
     <div className="dash-big">
           <div className="title">
@@ -149,8 +158,8 @@ export default function Electricity() {
           <table  border="0" width="100%" style={{background:'#fff',borderRadius:"10px", paddingTop:"0"}}>
   <tr>
    <td>
-    <div class="table-data">
-     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start"}}>
+   <div className="table-data">
+     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start,", position:"relative"}}>
      <tr  style={{background:'#D6FFFD', height:"40px", border:"none",borderCollapse:"collapse", fontSize:"14px"}}> 
           <th style={{background:'#D6FFFD', border:"none",borderCollapse:"collapse",textAlign:"start",paddingLeft:"20px"}} >Service Description</th>
           <th style={{textAlign:"start"}}>Sender </th>
@@ -160,6 +169,10 @@ export default function Electricity() {
           <th style={{textAlign:"start"}}>Date</th>
           <th style={{textAlign:"start"}}>Reference</th>
      </tr>
+
+     {
+        loading ? <LoadingModal/> : <> 
+
         {currentItems.map((wallet, index )=> (
          
               <tr key={index} className="coin tableHover"onClick={() => handleRowClick(wallet.reference)} >
@@ -173,7 +186,8 @@ export default function Electricity() {
         </tr>
         
           ))}
-      
+      </>
+}
       </table>
      </div>
     </td>

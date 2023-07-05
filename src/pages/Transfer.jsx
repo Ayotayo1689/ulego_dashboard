@@ -14,6 +14,7 @@ import { Backdrop, Box, Button, Fade, Modal, Typography } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import LoadingModal from '../components/LoadingModal';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -77,6 +78,7 @@ export default function Transfer() {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -103,9 +105,11 @@ export default function Transfer() {
       
       axios.get(url, { headers })
       .then(response => {
-      console.log('GET request successful!');
-      // console.log(response.data.result)
+      setLoading(false)
+      console.log(response)
       setData(response.data.result);
+    
+     
       })
       .catch(error => {
       console.error('GET request failed:', error);
@@ -150,8 +154,8 @@ export default function Transfer() {
            <table  border="0" width="100%" style={{background:'#fff',borderRadius:"10px", paddingTop:"0"}}>
   <tr>
    <td>
-    <div class="table-data">
-     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start"}}>
+   <div className="table-data">
+     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start", position:"relative"}}>
      <tr  style={{background:'#D6FFFD', height:"40px", border:"none",borderCollapse:"collapse", fontSize:"14px"}}> 
           <th style={{background:'#D6FFFD', border:"none",borderCollapse:"collapse",textAlign:"start",paddingLeft:"20px"}} >Sender Name</th>
           <th style={{textAlign:"start"}}>Sender Bank</th>
@@ -160,18 +164,20 @@ export default function Transfer() {
           <th style={{textAlign:"start"}}>Beneficiary Bank</th>
           <th style={{textAlign:"start"}}>Beneficiary Account </th>
      </tr>
-        {currentItems.map((wallet, index )=> (
+       {
+        loading ? <LoadingModal/> : <> {currentItems.map((wallet, index )=> (
          
-              <tr key={index} className="coin tableHover"onClick={() => handleRowClick(wallet.reference)} >
-          <td style={{paddingLeft:"0px",display:"flex",gap:"10px"}}>{wallet.sender_account_name}</td>
-          <td style={{paddingLeft:"0px"}}>{wallet.sender_bank}</td>
-          <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.sender_account_number}</td>
-          <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.beneficiary_name}</td>
-          <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.beneficiary_bank_name}</td>
-          <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.beneficiary_account_number}</td>
-        </tr>
-        
-          ))}
+          <tr key={index} className="coin tableHover"onClick={() => handleRowClick(wallet.reference)} >
+      <td style={{paddingLeft:"0px",display:"flex",gap:"10px"}}>{wallet.sender_account_name}</td>
+      <td style={{paddingLeft:"0px"}}>{wallet.sender_bank}</td>
+      <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.sender_account_number}</td>
+      <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.beneficiary_name}</td>
+      <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.beneficiary_bank_name}</td>
+      <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.beneficiary_account_number}</td>
+    </tr>
+    
+      ))}</>
+       }
       
       </table>
      </div>

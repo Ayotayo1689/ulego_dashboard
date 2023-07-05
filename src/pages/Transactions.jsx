@@ -7,13 +7,14 @@ import axios from 'axios';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import { DataGrid } from '@mui/x-data-grid';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate  } from 'react-router-dom'
 import SearchIcon from '@mui/icons-material/Search';
 import SendIcon from '@mui/icons-material/Send';
 import { Backdrop, Box, Button, Fade, Modal, Typography } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import LoadingModal from '../components/LoadingModal';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -77,17 +78,49 @@ export default function Transactions() {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
+
+
+  const deviceKey = 'ulego-app-f11ad7dd-e351-4395-b2ad-eae2de81090c';
+  const datatoken = localStorage.getItem("token")
+  const token = `Bearer ${datatoken}`;
+
+  const handleRowClick = (id) => {
+    // window.location.href = `/wallets/details/id=${id}`;
+    navigate(`/transfer/details?id=${id}`);
+  };
+
 
   useEffect(() => {
-    fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd')
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
+    console.log(loading);
+    const fetchCoinData = async () => {
+
+      const url = 'https://devops-ulego-api.centralus.cloudapp.azure.com:447/api/administration/transactions/transfer';
+
+
+      const headers = {
+      'Authorization': token,
+      'X-DeviceKey': deviceKey,
+      };
+      
+      axios.get(url, { headers })
+      .then(response => {
+   console.log(response)
+      setData(response.data.result);
+       setLoading(false)
+     
       })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
+      .catch(error => {
+      console.error('GET request failed:', error);
       });
+    
+    };
+
+    fetchCoinData();
   }, []);
+  console.log(loading);
 
   // Calculate index range for the current page
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -123,29 +156,39 @@ export default function Transactions() {
           <table  border="0" width="100%" style={{background:'#fff',borderRadius:"10px", paddingTop:"0"}}>
   <tr>
    <td>
-    <div class="table-data">
-     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start"}}>
-     <tr  style={{background:'#D6FFFD', height:"40px", border:"none",borderCollapse:"collapse"}}> 
-          <th style={{background:'#D6FFFD', border:"none",borderCollapse:"collapse",textAlign:"start", padding:"20px"}} >Logo</th>
-          <th style={{textAlign:"start", padding:"20px"}}>Name</th>
-          <th style={{textAlign:"start", padding:"20px"}}>Symbol</th>
-          <th style={{textAlign:"start", padding:"20px"}}>Price</th>
+   <div className="table-data">
+     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start", position:"relative"}}>
+     <tr  style={{background:'#D6FFFD', height:"40px", border:"none",borderCollapse:"collapse", fontSize:"14px"}}> 
+          <th style={{background:'#D6FFFD', border:"none",borderCollapse:"collapse",textAlign:"start",paddingLeft:"20px"}} >Sender Name</th>
+          <th style={{textAlign:"start"}}>Sender Bank</th>
+          <th style={{textAlign:"start"}}>Sender Account </th>
+          <th style={{textAlign:"start"}}>Beneficiary Name</th>
+          <th style={{textAlign:"start"}}>Beneficiary Bank</th>
+          <th style={{textAlign:"start"}}>Beneficiary Account </th>
      </tr>
-        {currentItems.map(coin => (
-          <tr key={coin.id} className="coin">
-              <td style={{paddingLeft:"20px"}}><img src={coin.image} alt={coin.symbol} className="coin-img" /></td>
-              <td style={{paddingLeft:"20px"}}>{coin.name}</td>
-              <td style={{paddingLeft:"20px"}}>{coin.symbol}</td>
-              <td style={{paddingLeft:"20px"}}>{coin.current_price}</td>
-            </tr>
-          ))}
+       {/* <LoadingModal/> */}
+       {
+        loading ? <LoadingModal/> : <>
+         {currentItems.map((wallet, index )=> (
+         
+         <tr key={index} className="coin tableHover"onClick={() => handleRowClick(wallet.reference)} >
+     <td style={{paddingLeft:"0px",display:"flex",gap:"10px"}}>{wallet.sender_account_name}</td>
+     <td style={{paddingLeft:"0px"}}>{wallet.sender_bank}</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.sender_account_number}</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.beneficiary_name}</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.beneficiary_bank_name}</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>{wallet.beneficiary_account_number}</td>
+   </tr>
+   
+     ))}
+        </>
+       }
       
       </table>
      </div>
     </td>
    </tr>
  </table>
-
         <div className="pagination" style={{fontWeight:"500"}}>
         
         <p>Page</p>

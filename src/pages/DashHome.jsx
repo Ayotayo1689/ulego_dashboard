@@ -46,10 +46,10 @@ gap:"20px",
 const DashHome = () => {
   const [coinData, setCoinData] = useState([]);
   const [totalWallet, setTotalWallet] = useState("Loading...");
-  const [totalBookBal, setTotalBookBal] = useState("Loading...");
+  const [totalBookBal, setTotalBookBal] = useState("998,643");
   const [totalAvailBal, setTotalAvailBal] = useState("Loading...");
   const [totalPoolBal, setTotalPoolBal] = useState("Loading...");
-  const [totalSavings, setTotalSavings] = useState("Loading...");
+  const [totalSavings, setTotalSavings] = useState("538,690");
 
   const navigate = useNavigate();
  
@@ -70,18 +70,28 @@ const DashHome = () => {
 const datatoken = localStorage.getItem("token")
 const token = `Bearer ${datatoken}`;
 
-
     const fetchCoinData = async () => {
-      try {
+
+      const url = 'https://devops-ulego-api.centralus.cloudapp.azure.com:447/api/administration/transactions/transfer';
 
 
-        const response = await axios.get(
-          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd'
-        );
-        setCoinData(response.data);
-      } catch (error) {
-        console.error('Error fetching coin data:', error);
-      }
+      const headers = {
+      'Authorization': token,
+      'X-DeviceKey': deviceKey,
+      };
+      
+      axios.get(url, { headers })
+      .then(response => {
+      console.log('GET request successful!');
+      console.log(response)
+      // setLoading(false)
+      // setData(response.data.result);
+      })
+      .catch(error => {
+        console.log(`this is error: ${error}`);
+      //  setApiErr(true)
+      });
+    
     };
 
     fetchCoinData();
@@ -101,7 +111,7 @@ const headers = {
 
 axios.get(url, { headers })
 .then(response => {
-console.log('GET request successful!');
+// console.log('GET request successful!');
 // console.log(response.data.result[0].wallet_count)
 setTotalWallet(response.data.result[0].wallet_count);
 })
@@ -152,7 +162,7 @@ const headers = {
 
 axios.get(url, { headers })
 .then(response => {
-console.log('GET request successful!');
+// console.log('GET request successful!');
 // console.log(response)
 setTotalAvailBal(response.data.result[0].balance);
 })
@@ -176,7 +186,7 @@ const headers = {
 
 axios.get(url, { headers })
 .then(response => {
-console.log('GET request successful!');
+// console.log('GET request successful!');
 // console.log(response)
 setTotalPoolBal(response.data.result[0].balance);
 })
@@ -327,7 +337,7 @@ getTotalPoolBal()
           <table  border="0" width="100%" style={{background:'#fff',borderRadius:"10px", paddingTop:"0"}}>
   <tr>
    <td>
-    <div class="table-data">
+    <div className="table-data">
      <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start"}}>
      <tr  style={{background:'#D6FFFD', height:"40px", border:"none",borderCollapse:"collapse"}}> 
           <th style={{background:'#D6FFFD', border:"none",borderCollapse:"collapse",textAlign:"start", padding:"20px"}} >Logo</th>
