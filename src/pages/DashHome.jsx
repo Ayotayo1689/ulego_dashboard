@@ -3,7 +3,7 @@ import DashNav from '../components/DashNav';
 import Dashtopnav from '../components/Dashtopnav';
 import "./DashApp.css";
 import PieChartWithTooltip from '../components/PieChart';
-import {ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid,  Tooltip} from "recharts";
+import {ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts";
 import PersonIcon from '@mui/icons-material/Person';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
@@ -16,6 +16,7 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
+import ulegoImg from "../components/ulego.svg"
 
 
 
@@ -213,39 +214,76 @@ getTotalPoolBal()
   // }, []);
 
 
-
+const tableData = [
+  1,2,3,4,5,6,7,8,9,10
+]
   
 
   const UserData = [
     {
-      name: "python",
-      student: 13,
-      fees: 10,
+      name: " ",
+      student: 0,
+      fees: 0,
     },
     {
-      name: "javascript",
-      student: 15,
-      fees: 12,
+      name: " Jan",
+      student: 60,
+      fees: 50,
     },
     {
-      name: "php",
-      student: 5,
-      fees: 10,
+      name: "Feb",
+      student: 50,
+      fees: 40,
     },
     {
-      name: "java",
+      name: "Mar",
+      student: 40,
+      fees: 50,
+    },
+    {
+      name: "April",
+      student: 30,
+      fees: 20,
+    },
+    {
+      name: "May",
+      student: 40,
+      fees: 50,
+    },
+    {
+      name: "June",
       student: 10,
-      fees: 7,
+      fees: 60,
     },
     {
-      name: "c#",
-      student: 9,
-      fees: 4,
+      name: "July",
+      student: 20,
+      fees: 30,
     },
     {
-      name: "c++",
+      name: "Aug",
       student: 10,
-      fees: 8,
+      fees: 60,
+    },
+    {
+      name: "Sept",
+      student: 40,
+      fees: 30,
+    },
+    {
+      name: "Oct",
+      student: 10,
+      fees: 60,
+    },
+    {
+      name: "Nov",
+      student: 50,
+      fees: 60,
+    },
+    {
+      name: "Dec",
+      student: 10,
+      fees: 30,
     },
   ];
 
@@ -303,25 +341,49 @@ getTotalPoolBal()
           </div>
         </div>
         <div className="parent-box">
-          <div className="text-box">
+          <div className="text-box" style={{flexDirection:"column", alignItems:"flex-start"}}>
+            <div style={{marginLeft:"8%", marginTop:"10px", marginBottom:"10px",fontWeight:"500", fontSize:"20px"}}>Financial Statistics</div>
             <ResponsiveContainer width="100%" aspect={2.9} >
             <LineChart data={UserData} height={300}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" interval={"preserveStartEnd"} />
-              <YAxis  height={300}/>
-              <Tooltip contentStyle={{background:"rgb(43, 228, 213)"}} />
-              <Line type="monotone" dataKey="student" stroke='red' activeDot={{ r: 8}}/>
-              <Line type="monotone" dataKey="fees" stroke='green' activeDot={{ r: 8}} />
+              <YAxis  height={350}/>
+              <Line type="monotone" dataKey="student" stroke='red' />
+              <Line type="monotone"  dataKey="fees" stroke='green' />
             </LineChart>
             </ResponsiveContainer>
           </div>
           <div className="text-box-pie">
-            <div className="pie-amount">
+            <div style={{position:"absolute",width:"95%",top:"15px",left:"30px",fontWeight:"500",fontSize:"23px"}}>Savings</div>
+            <div className="pie-amount" >
               <div className="circle">
                 <div className="small">Total savings</div>
                 <div className="amount">
                   {totalSavings}
                 </div>
+              </div>
+            </div>
+            <div style={{position:"absolute",width:"95%",display:"flex",bottom:"0"}}>
+              <div style={{flex:"1",height:"40px"}} >
+                <div style={{display:"flex",gap:"5px"}}>
+                  <div style={{background:"#FFCC82",width:"5px",height:"15px"}}></div>
+                  <div style={{fontSize:"14px",color:"#6D6969"}}>Fixed Savings</div>
+                </div>
+                <div>100,000</div>
+              </div>
+              <div style={{flex:"1",height:"40px"}} >
+                <div style={{display:"flex",gap:"5px"}}>
+                  <div style={{background:"#5EFF5E",width:"5px",height:"15px"}}></div>
+                  <div style={{fontSize:"14px",color:"#6D6969"}}>Auto Savings</div>
+                </div>
+                <div>100,000</div>
+              </div>
+              <div style={{flex:"1",height:"40px"}} >
+                <div style={{display:"flex",gap:"5px"}}>
+                  <div style={{background:"#7777FF",width:"5px",height:"15px"}}></div>
+                  <div style={{fontSize:"14px",color:"#6D6969"}}>Target Savings</div>
+                </div>
+                <div>100,000</div>
               </div>
             </div>
            <PieChartWithTooltip />
@@ -332,28 +394,34 @@ getTotalPoolBal()
             <div className="head">
             Transactions
             </div>
-            <Link className="view-all" to={"/dashboard/transactions"}>View all</Link>
+            <Link style={{color:"#134E4A", fontWeight:"500"}} className="view-all" to={"/dashboard/transactions"}>View all</Link>
           </div>
           <table  border="0" width="100%" style={{background:'#fff',borderRadius:"10px", paddingTop:"0"}}>
   <tr>
    <td>
-    <div className="table-data">
-     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start"}}>
-     <tr  style={{background:'#D6FFFD', height:"40px", border:"none",borderCollapse:"collapse"}}> 
-          <th style={{background:'#D6FFFD', border:"none",borderCollapse:"collapse",textAlign:"start", padding:"20px"}} >Logo</th>
-          <th style={{textAlign:"start", padding:"20px"}}>Name</th>
-          <th style={{textAlign:"start", padding:"20px"}}>Symbol</th>
-          <th style={{textAlign:"start", padding:"20px"}}>Price</th>
+   <div className="table-data">
+     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start,", position:"relative"}}>
+     <tr  style={{background:'#D6FFFD', height:"40px", border:"none",borderCollapse:"collapse", fontSize:"14px"}}> 
+          <th style={{background:'#D6FFFD', border:"none",borderCollapse:"collapse",textAlign:"start",paddingLeft:"20px"}} >WALLET</th>
+          <th style={{textAlign:"start"}}>Transaction Type  </th>
+          <th style={{textAlign:"start"}}>Amount </th>
+          <th style={{textAlign:"start"}}>Satus</th>
+          <th style={{textAlign:"start"}}>Date</th>
+          <th style={{textAlign:"start"}}>Reference</th>
      </tr>
-        {coinData.slice(0,6).map(coin => (
-          <tr key={coin.id} className="coin">
-              <td style={{paddingLeft:"20px"}}><img src={coin.image} alt={coin.symbol} className="coin-img" /></td>
-              <td style={{paddingLeft:"20px"}}>{coin.name}</td>
-              <td style={{paddingLeft:"20px"}}>{coin.symbol}</td>
-              <td style={{paddingLeft:"20px"}}>{coin.current_price}</td>
-            </tr>
-          ))}
-      
+
+     {tableData.map((data, index )=> (
+         
+         <tr key={index} className="coin tableHover" >
+      <td style={{paddingLeft:"0px",paddingLeft:"0px",display:"flex",alignItems:"center",gap:"6px"}}><img src={ulegoImg} alt={"bundle logo"} width={"20px"} style={{borderRadius:"50%"}} />ULEGO - John Peters</td>
+     <td style={{paddingLeft:"0px"}}>Airtime purchase</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>1,500.00</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>Completed</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>12 April, 2023  02:45:55am </td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>Ulego-WOYZOFSKQCGGGBVJWKK</td>
+   </tr>
+   
+     ))}
       </table>
      </div>
     </td>

@@ -14,6 +14,8 @@ import { Backdrop, Box, Button, Fade, Modal, Typography } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ulegoImg from "../components/ulego.svg"
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -98,6 +100,10 @@ export default function Savings() {
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  const tableData = [
+    1,2,3,4,5,6,7,8,9,10
+  ]
+
   return (
 
     <div className='dash'>
@@ -119,27 +125,32 @@ export default function Savings() {
           </div>
 
 
-
           <table  border="0" width="100%" style={{background:'#fff',borderRadius:"10px", paddingTop:"0"}}>
   <tr>
    <td>
    <div className="table-data">
-     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start"}}>
-     <tr  style={{background:'#D6FFFD', height:"40px", border:"none",borderCollapse:"collapse"}}> 
-          <th style={{background:'#D6FFFD', border:"none",borderCollapse:"collapse",textAlign:"start", padding:"20px"}} >Logo</th>
-          <th style={{textAlign:"start", padding:"20px"}}>Name</th>
-          <th style={{textAlign:"start", padding:"20px"}}>Symbol</th>
-          <th style={{textAlign:"start", padding:"20px"}}>Price</th>
+     <table width="100%" style={{ border:"0px",borderCollapse:"collapse",textAlign:"start,", position:"relative"}}>
+     <tr  style={{background:'#D6FFFD', height:"40px", border:"none",borderCollapse:"collapse", fontSize:"14px"}}> 
+          <th style={{background:'#D6FFFD', border:"none",borderCollapse:"collapse",textAlign:"start",paddingLeft:"20px"}} >WALLET</th>
+          <th style={{textAlign:"start"}}>Transaction Type  </th>
+          <th style={{textAlign:"start"}}>Amount </th>
+          <th style={{textAlign:"start"}}>Satus</th>
+          <th style={{textAlign:"start"}}>Date</th>
+          <th style={{textAlign:"start"}}>Reference</th>
      </tr>
-        {currentItems.map(coin => (
-          <tr key={coin.id} className="coin">
-              <td style={{paddingLeft:"20px"}}><img src={coin.image} alt={coin.symbol} className="coin-img" /></td>
-              <td style={{paddingLeft:"20px"}}>{coin.name}</td>
-              <td style={{paddingLeft:"20px"}}>{coin.symbol}</td>
-              <td style={{paddingLeft:"20px"}}>{coin.current_price}</td>
-            </tr>
-          ))}
-      
+
+     {tableData.map((data, index )=> (
+         
+         <tr key={index} className="coin tableHover" >
+      <td style={{paddingLeft:"0px",paddingLeft:"0px",display:"flex",alignItems:"center",gap:"6px"}}><img src={ulegoImg} alt={"bundle logo"} width={"20px"} style={{borderRadius:"50%"}} />ULEGO - John Peters</td>
+     <td style={{paddingLeft:"0px"}}>Airtime purchase</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>1,500.00</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>Completed</td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>12 April, 2023  02:45:55am </td>
+     <td style={{paddingLeft:"0px",marginLeft:"20px"}}>Ulego-WOYZOFSKQCGGGBVJWKK</td>
+   </tr>
+   
+     ))}
       </table>
      </div>
     </td>
