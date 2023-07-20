@@ -341,9 +341,9 @@ const tableData = [
           </div>
         </div>
         <div className="parent-box">
-          <div className="text-box" style={{flexDirection:"column", alignItems:"flex-start"}}>
-            <div style={{marginLeft:"8%", marginTop:"10px", marginBottom:"10px",fontWeight:"500", fontSize:"20px"}}>Financial Statistics</div>
-            <ResponsiveContainer width="100%" aspect={2.9} >
+          <div className="text-box"  style={{flexDirection:"column", alignItems:"flex-start"}}>
+            <div style={{marginLeft:"8%", marginTop:"10px", marginBottom:"10px",fontWeight:"500", fontSize:"20px",broder:"2px solid red"}}>Financial Statistics</div>
+            <ResponsiveContainer width="100%" aspect={"10%"} >
             <LineChart data={UserData} height={300}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" interval={"preserveStartEnd"} />
@@ -396,6 +396,9 @@ const tableData = [
             </div>
             <Link style={{color:"#134E4A", fontWeight:"500"}} className="view-all" to={"/dashboard/transactions"}>View all</Link>
           </div>
+
+          <div className='table-container'>
+
           <table  border="0" width="100%" style={{background:'#fff',borderRadius:"10px", paddingTop:"0"}}>
   <tr>
    <td>
@@ -427,7 +430,7 @@ const tableData = [
     </td>
    </tr>
  </table>
-
+</div> 
       </div>
         
     </div>
