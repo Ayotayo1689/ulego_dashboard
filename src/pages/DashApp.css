@@ -1,3 +1,5 @@
+
+
 .dash-main{
      padding: 20px;
 }
@@ -131,7 +133,6 @@
     gap: 30px;
 }
 .card{
-    /* border: 2px solid red; */
     padding: 20px;
     flex: 1;
 }
@@ -281,6 +282,7 @@
 
 
 .text-box{
+    max-width: 100%;
     flex: 2;
     display:flex;
     justify-content:center;
@@ -334,24 +336,47 @@ th, td{
 .dash-x{
     display: none;
     cursor: pointer;
+    
+    
 }
 .dash-ham{
     display: none;
     cursor: pointer;
+    z-index: 1;
 }
 @media only screen and (max-width:884px) {
+    .table-container{
+        width: 100%;
+        overflow-y: visible; /* Hide horizontal scrollbar */
+  overflow-x: scroll;
+
+        min-height: 95vh;
+    }
+  table{
+    width: 800px;
+  }
+        .text-box{
+           width: 95vw;
+        }
+    .box-title{
+        font-size: 16px;
+    }
+    .user-num{
+        text-align: center;
+    }
     .dash-nav{
         width: 250px;
-        background: #3ffbf2;
+        background: #f1f1f1;
         z-index: 1;
         position: absolute;
     }
-    .dash-nav-close{
+    .dash-nav-open{
         left: -250px;
     }
     .dash-ham svg{
        width: 100%;
        color: aqua;
+       
     }
     .dash-ham{
         position: fixed;

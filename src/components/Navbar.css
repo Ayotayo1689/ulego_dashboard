@@ -1,5 +1,6 @@
 .ham{
     display: none;
+    z-index: 9;
 }
 /* .nav-side{
     width: 0vw;

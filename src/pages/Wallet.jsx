@@ -128,7 +128,8 @@ export default function Wallets() {
      
       })
       .catch(error => {
-        setApiErr(true)
+        // setApiErr(true)
+        console.log(error)
       });
 
       
@@ -168,7 +169,7 @@ export default function Wallets() {
           </Search>
           </div>
 
-
+          <div className='table-container'>
 
           <table  border="0" width="100%" style={{background:'#fff',borderRadius:"10px", paddingTop:"0"}}>
   <tr>
@@ -205,7 +206,7 @@ export default function Wallets() {
     </td>
    </tr>
  </table>
-
+</div>
         <div className="pagination" style={{fontWeight:"500"}}>
         
         <p>Page</p>
