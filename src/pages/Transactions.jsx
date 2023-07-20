@@ -150,7 +150,7 @@ export default function Transactions() {
             />
           </Search>
           </div>
-
+          <div className='table-container'>
 
 
           <table  border="0" width="100%" style={{background:'#fff',borderRadius:"10px", paddingTop:"0"}}>
@@ -189,6 +189,7 @@ export default function Transactions() {
     </td>
    </tr>
  </table>
+ </div>
         <div className="pagination" style={{fontWeight:"500"}}>
         
         <p>Page</p>
